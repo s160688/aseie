@@ -1,0 +1,155 @@
+import numpy as np
+import time
+import copy
+import random
+
+# Lista z 5000 losowych elementów i kopiowanie by używać identycznej we wszystkich algorytmach
+lista = np.random.permutation(5000)
+lista1= copy.copy(lista)
+lista2 = copy.copy(lista)
+lista3 = copy.copy(lista)
+#---------Sortowanie bąbelkowe------------------------------------------------
+
+# Rozpoczęcie pomiaru czasu
+start_time = time.time()
+
+# lista = np.random.permutation(5000)
+
+def bubble():
+    # Iterujemy od tyłu, od ostatniego indeksu w liście do zera co -1 (liczby w liście są całkowite)
+    for i in range(4999, 0, -1):
+        # Iterujemy do przodu
+        for j in range(i):
+            # Jeśli element aktualny jest mniejszy od poprzedniego, zamieniamy je miejscami
+            if lista1[j] > lista1[j+1]:
+
+                bufor = lista1[j]
+                lista1[j] = lista1[j + 1]
+                lista1[j + 1] = bufor
+
+print('\n Losowa lista przed posortowaniem bąbelkowym')
+print(lista1)
+
+bubble()
+
+# Koniec pomiaru czasu.
+babelkowe_czas = time.time() - start_time
+
+
+print('Po zastosowaniu sortowania bąbelkowego')
+print(lista1)
+
+
+##------------Sortowanie przez wybór---------------------------------
+
+# Rozpoczęcie pomiaru czasu
+start_time = time.time()
+
+def wymiana():
+    # minimum = lista2[0]
+    # minimum = 0
+    # k = 0
+    for i in range(len(lista2)):
+        # przeglądamy tylko elementy na prawo od tych wstawionych już w listę przez wybór
+        for j in range(i + 1, len(lista2)):
+            # Jeśli aktualny element z listy na prawo (jeszcze niesprawdzoych)
+            # jest mniejszy od aktualnego elementu w głównej liście [i], wstawiamy go na jego miejsce
+            if lista2[j] < lista2[i]:
+                minimum = lista2[j]
+                lista2[j] = lista2[i]
+                lista2[i] = minimum
+                # minimum = 0
+
+
+print('\n Losowa lista przed posortowaniem z wyborem (wymianą)')
+print(lista2)
+
+wymiana()
+# Koniec pomiaru czasu
+wymiana_czas = time.time() - start_time
+
+print('Po zastosowaniu sortowania z wyborem (wymianą)')
+print(lista2)
+
+
+
+#3-----------Quicksort----------------------------------------------
+
+def quickSort(lista3):
+   Przesuwanie(lista3, 0, len(lista3) - 1)
+
+def Przesuwanie(lista3, indexL, indexP):
+    if indexL < indexP:
+        # dopóki indeks sprawdzanego elementu z lewej jest mniejszy od prawej, program działa normalnie
+        granica = Podzial(lista3, indexL, indexP)
+
+        # Prawy sprawdzany element przesuwamy o 1 w lewo
+        Przesuwanie(lista3, indexL, granica - 1)
+        # Lewy sprawdzany element przesuwamy o 1 w prawo
+        Przesuwanie(lista3, granica + 1, indexP)
+
+def Podzial(lista3, indexL, indexPrawy):
+    pivot = lista3[indexL]
+    # sprawdzane pole w lewej części
+    indexLewy = indexL
+
+    # print ("pierwszy " + str(indexL))
+    # print ("ostatni" + str(indexP))
+
+   # sprawdzane pole w prawej części (zaczyna od końca)
+    indexPrawy
+
+    koniec = 0
+    while (koniec != 1):
+
+        # jeśli element sprawdzany z lewej mniejszy/równy prawej i element z lewej mniejszy od pivota
+        # przesuwamy lewy znacznik na kolejną pozycję (bliżej prawej strony)
+        while indexLewy <= indexPrawy and lista3[indexLewy] <= pivot:
+            indexLewy = indexLewy + 1
+
+        # jeśli element sprawdzany z lewej mniejszy/równy prawej i element z prawej mniejszy od pivota
+        # przesuwamy prawy znacznik na kolejną pozycję (bliżej lewej strony)
+        while indexLewy <= indexPrawy and lista3[indexPrawy] >= pivot:
+            indexPrawy = indexPrawy - 1
+
+        # print ("L+P: " + str(indexLewy) + " " + str(indexPrawy))
+        if indexLewy > indexPrawy:
+            koniec = 1 # brak zamiany, koniec pętli
+        else:
+            # zamiana elementów z lewej i prawej ze sobą jeśli prawy > lewego
+            bufor = lista3[indexLewy]
+            # print ("bufor=" + str(bufor) + "lewy=" + str(indexLewy))
+            lista3[indexLewy] = lista3[indexPrawy]
+            lista3[indexPrawy] = bufor
+
+    # wpisujemy element z lewego skrajnego w miejsce prawego sprawdzanego (i vice versa)
+    # print('indexzero ' + str(indexL))
+    bufor = lista3[indexL]
+    # print('prawy' + str(indexPrawy))
+    lista3[indexL] = lista3[indexPrawy]
+    lista3[indexPrawy] = bufor
+
+    return indexPrawy
+
+
+print('\n Przed zastosowaniem quicksorta')
+print(lista3)
+start_time = time.time()
+
+quickSort(lista3)
+
+quicksort_czas = time.time() - start_time
+
+print('Po zastosowaniu quicksorta')
+print(lista3)
+
+##-------------Czasy----------------------------
+
+print("Czas trwania sortowania bąbelkowego:")
+print(babelkowe_czas)
+
+print("Czas trwania sortowania z wyborem:")
+print(wymiana_czas)
+
+print("Czas trwania quicksorta:")
+print(quicksort_czas)
